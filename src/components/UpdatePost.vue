@@ -1,38 +1,44 @@
 <template>
-	<div class="background">
-		<form class="createPostArea">
-			<div class="createInfo">게시글 수정</div>
-				<div class="tag">
-					<select v-model="form.tag">
-						<option disabled value="">소분/나눔</option>
-  						<option value=0>소분</option>
-  						<option value=1>나눔</option>
-						<option value=2>완료</option>
-					</select>
+	<div class="l_main">
+		<div class="l_wrapper">
+			<div class="content">
+				<div class="background">
+					<form class="createPostArea">
+						<div class="createInfo">게시글 수정</div>
+							<div class="tag">
+								<select v-model="form.tag">
+									<option disabled value="">소분/나눔</option>
+									<option value=0>소분</option>
+									<option value=1>나눔</option>
+									<option value=2>완료</option>
+								</select>
+							</div>
+							<div class="title">
+								<div class="key">title</div>
+								<div class="stick"></div>
+								<input id="title" v-model="form.title" type="string" placeholder="제목이에용"/>
+							</div>
+							<div class="price">
+								<div class="key">price</div>
+								<div class="stick"></div>
+								<input v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
+								<div v-else> {{form.price = 0}} </div>
+							</div>
+							<div class="content">
+								<div class="key">content</div>
+								<div class="stick"></div>
+								<!-- {{thePost.content}} -->
+								<textarea v-model="form.content" type="string" placeholder="내용이에용"/>
+							</div>
+							<div>
+								<input multiple @change='onInputImage()' ref="postImage" type="file">
+							</div>
+						<button class="registerBtn" @click="update()">수정</button>
+						<button class="cancelBtn" @click="cancel()">취소</button>	
+					</form>
 				</div>
-				<div class="title">
-					<div class="key">title</div>
-					<div class="stick"></div>
-					<input id="title" v-model="form.title" type="string" placeholder="제목이에용"/>
-				</div>
-				<div class="price">
-					<div class="key">price</div>
-					<div class="stick"></div>
-					<input v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
-					<div v-else> {{form.price = 0}} </div>
-				</div>
-				<div class="content">
-					<div class="key">content</div>
-					<div class="stick"></div>
-					<!-- {{thePost.content}} -->
-					<textarea v-model="form.content" type="string" placeholder="내용이에용"/>
-				</div>
-				<div>
-					<input multiple @change='onInputImage()' ref="postImage" type="file">
-				</div>
-			<button class="registerBtn" @click="update()">수정</button>
-			<button class="cancelBtn" @click="cancel()">취소</button>	
-		</form>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -97,7 +103,7 @@ export default {
 				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
 			}
 			this.$store.dispatch('post/updatePost', formData);
-			console.log(index);
+			// console.log(index);
 			this.$router.push(`/post/${index}`);
 		},
 		cancel() {

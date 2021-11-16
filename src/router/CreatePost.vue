@@ -1,45 +1,45 @@
 <template>
-	<div class="background">
-		<form class="createPostArea">
-			<div class="createInfo">게시글 작성</div>
-				<div class="title">
-					<div class="key">제목</div>
-					<div class="stick"></div>
-					<input class="titlebox" v-model="form.title" type="string" placeholder="제목이에용"/>
+				<div class="background">
+					<form class="createPostArea">
+						<div class="createInfo">게시글 작성</div>
+							<div class="title">
+								<div class="key">제목</div>
+								<div class="stick"></div>
+								<input class="titlebox" v-model="form.title" type="string" placeholder="제목이에용"/>
+							</div>
+							<div class="content">
+								<!-- <div>{{form.user}}</div> -->
+								<div class="key">내용</div>
+								<div class="stick"></div>
+								<textarea class="textbox" v-model="form.content" type="string" placeholder="내용이에용"/>
+							</div>
+							<div class="tag">
+								<select v-model="form.tag">
+									<option disabled value="">소분/나눔</option>
+									<option value=0>소분</option>
+									<option value=1>나눔</option>
+								</select>
+								<!-- <div class="key">분류</div>
+								<div class="stick"></div>
+								<input type="radio" id='sale' value=0 v-model="form.tag">
+								<label for="sale">소분</label>
+								<input type="radio" id='share' value=1 v-model="form.tag">
+								<label for="share">나눔</label> -->
+							</div>
+							<div class="price">
+								<div class="key">가격</div>
+								<div class="stick"></div>
+								<input v-if="form.tag !== '1'" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
+								<div class="zero" v-else> {{form.price = 0}} </div>
+							</div>
+							<div>
+								<p>이미지는 3장까지 선택 가능합니다.</p>
+								<input multiple @change="onInputImage()" ref="postImage" type="file">
+							</div>
+						<button class="registerBtn" @click.prevent="checkForm()">작성</button>
+						<button class="cancelBtn" @click="cancel()">취소</button>	
+					</form>
 				</div>
-				<div class="content">
-					<!-- <div>{{form.user}}</div> -->
-					<div class="key">내용</div>
-					<div class="stick"></div>
-					<textarea class="textbox" v-model="form.content" type="string" placeholder="내용이에용"/>
-				</div>
-				<div class="tag">
-					<select v-model="form.tag">
-						<option disabled value="">소분/나눔</option>
-  						<option value=0>소분</option>
-  						<option value=1>나눔</option>
-					</select>
-					<!-- <div class="key">분류</div>
-					<div class="stick"></div>
-					<input type="radio" id='sale' value=0 v-model="form.tag">
-					<label for="sale">소분</label>
-					<input type="radio" id='share' value=1 v-model="form.tag">
-					<label for="share">나눔</label> -->
-				</div>
-				<div class="price">
-					<div class="key">가격</div>
-					<div class="stick"></div>
-					<input v-if="form.tag !== '1'" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
-					<div class="zero" v-else> {{form.price = 0}} </div>
-				</div>
-				<div>
-					<p>이미지는 3장까지 선택 가능합니다.</p>
-					<input multiple @change="onInputImage()" ref="postImage" type="file">
-				</div>
-			<button class="registerBtn" @click.prevent="checkForm()">작성</button>
-			<button class="cancelBtn" @click="cancel()">취소</button>	
-		</form>
-	</div>
 </template>
 
 <script>
@@ -125,11 +125,9 @@ export default {
         			'Content-Type' : 'multipart/form-data'
               }
 			})
-			console.log(res);
 			if (res.status == 201)
 			{
 				this.$store.dispatch('post/searchPostWithId', res.data.id);
-				// this.$store.dispatch('post/getBoard', {	payload:'' });
 				this.$router.push(`/post/${res.data.id}`);
 			}
 			else
@@ -172,18 +170,20 @@ export default {
 	display: inline-block;
 }
 .background{
-	padding: 300px 70px 70px 70px;
-	@include center;
+	// padding-top: 2em;
+	@media ( max-width: 500px ) {
+		padding-top: 0;
+	}
 	.createPostArea {
 		@include center;
 		border-radius: .3em;
 		box-shadow: 0 0 10px 0 $color_shadow_03;
-		min-width: 200px;
-		min-height: 250px;
-		width: 100vh;
-		height: 50vh;
-		border: 20px;
-		padding: 30px;
+		// min-width: 200px;
+		// min-height: 250px;
+		width: 100%;
+		height: 150%;
+		border: .3em;
+		padding: .3em 1em;
 		.createInfo{
 			margin: 0px 0px;
 			font-size: 20px;
