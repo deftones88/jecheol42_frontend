@@ -7,8 +7,6 @@
 						<div class="createInfo">게시글 작성</div>
 						<div class="postBox">
 							<div class="title">
-								<!-- <div class="key">제목</div>
-								<div class="stick"></div> -->
 								<input class="titlebox" v-model="form.title" type="string" placeholder="제목"/>
 							</div>
 							<div class="tagBox">
@@ -18,29 +16,21 @@
 										<option value=0>소분</option>
 										<option value=1>나눔</option>
 									</select>
-									<!-- <div class="key">분류</div>
-									<div class="stick"></div>
-									<input type="radio" id='sale' value=0 v-model="form.tag">
-									<label for="sale">소분</label>
-									<input type="radio" id='share' value=1 v-model="form.tag">
-									<label for="share">나눔</label> -->
 								</div>
 								<div class="price">
-									<!-- <div class="key">가격</div>
-									<div class="stick"></div> -->
 									<input v-if="form.tag !== '1'" v-model="form.price" type="number" placeholder="가격" min="0"/>
 									<div class="zero" v-else> {{form.price = 0}} </div>
 								</div>
 							</div>
 							<div class="textBox">
-								<!-- <div>{{form.user}}</div> -->
-								<!-- <div class="key">내용</div>
-								<div class="stick"></div> -->
 								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
+									<img class="thumbnail" v-if="url1" :src="url1" />
+									<img class="thumbnail" v-if="url2" :src="url2" />
+									<img class="thumbnail" v-if="url3" :src="url3" />
 							</div>
 							<div class="fileSelect">
 								<label class="input-file-btn" for="input-file">사진 첨부하기</label>
-								<input multiple @change="onInputImage()" ref="postImage" type="file" id="input-file" style="display: none"/>
+								<input multiple @change="onInputImage(event)" ref="postImage" type="file" id="input-file" style="display: none"/>
 								<p>이미지는 최대 3장까지</p>
 							</div>
 							<div class="bntBox">
@@ -79,10 +69,22 @@ export default {
 		}
 	},
 	methods: {
-		onInputImage() {
+		onInputImage(e) {
 			this.form.image1 = this.$refs.postImage.files[0];
 			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
 			this.form.image3 = this.$refs.postImage.files[2] ? this.$refs.postImage.files[2] : '';
+			this.previewURL(e);
+		},
+		previewURL(e) {
+			let url1 = '';
+			let url2 = '';
+			let url3 = '';
+			console.log(this.form.image1);
+			this.url1 = URL.createObjectURL(this.form.image1);
+			this.url2 = URL.createObjectURL(this.form.image2);
+			this.url3 = URL.createObjectURL(this.form.image3);
+			
+			// this.checkForm();
 		},
 		checkForm(e){
 			if (!this.form.title)
@@ -126,7 +128,6 @@ export default {
 				image3: variable2,
 				view_count: 0
 			};
-			console.log(postObj.user_key);
 			let formData = new FormData();
 			for (let key in postObj) {
 				formData.append(key, postObj[key]);
@@ -140,7 +141,6 @@ export default {
         			'Content-Type' : 'multipart/form-data'
               }
 			})
-			console.log(res);
 			if (res.status == 201)
 			{
 				this.$store.dispatch('post/searchPostWithId', res.data.id);
@@ -184,7 +184,7 @@ export default {
 }
 @mixin price {
 	width: 90%;
-	color: rgba(#76862c, 0.76);
+	color: rgba(#202020, 0.76);
 	border-color: transparent;
 	font-size: 15px;
 }
@@ -192,7 +192,7 @@ export default {
 	width: $size;
 	padding: 8px;
 	margin: 10px 0px;
-	color: rgba(#76862c, 0.76);
+	color: rgba(#202020, 0.76);
 	border-color: transparent;
 }
 @mixin btnCss {
@@ -210,7 +210,7 @@ export default {
 .l_main {
 	height: 100vh;
 }
-.content {
+	.content {
 	.background{
 		height: 400px;
 		font-family: sans-serif;
@@ -262,7 +262,11 @@ export default {
 					@include boxCss;
 					.text{
 						@include input(95%);
-						min-height: 300px;
+						// min-height: 150px;
+					}
+					.thumbnail{
+						width: 80px;
+						height: 80px;
 					}
 				}
 				.fileSelect{
