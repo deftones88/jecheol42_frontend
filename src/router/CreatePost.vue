@@ -24,6 +24,7 @@
 							</div>
 							<div class="textBox">
 								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
+									<!-- <p v-html="newContent"></p> -->
 									<img class="thumbnail" v-if="url1" :src="url1" />
 									<img class="thumbnail" v-if="url2" :src="url2" />
 									<img class="thumbnail" v-if="url3" :src="url3" />
@@ -93,7 +94,7 @@ export default {
 				confirm("카테고리를 설정해주세요.")
 			if (!this.form.content)
 				confirm("내용은 필수입니다.")
-			if (this.form.tag === "소분" && !this.form.price)
+			if (this.form.tag === "0" && !this.form.price)
 				confirm("가격을 입력해주세요.")
 			if (this.$refs.postImage.files[3])
 				confirm("사진은 3장까지 선택 가능합니다.")
@@ -111,6 +112,8 @@ export default {
 			let variable = this.form.image1;
 			let variable1 = this.form.image2;
 			let variable2 = this.form.image3;
+			// console.log("hi");
+			// let newContent = this.form.content.replace(/(\n|\r\n)/g, "<br>");
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 			let pk = userInfo.pk;
 			const index = this.$route.params.id;
@@ -260,7 +263,9 @@ export default {
 				}
 				.textBox{
 					@include boxCss;
+					white-space: pre-line;
 					.text{
+						white-space: pre-line;
 						@include input(95%);
 						// min-height: 150px;
 					}
