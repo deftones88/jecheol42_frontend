@@ -4,7 +4,7 @@
 			<div class="content">
 				<div class="background">
 					<form class="createPostArea">
-						<div class="createInfo">게시글 작성</div>
+						<div class="createInfo"></div>
 						<div class="postBox">
 							<div class="title">
 								<input class="titlebox" v-model="form.title" type="string" placeholder="제목"/>
@@ -24,16 +24,17 @@
 							</div>
 							<div class="textBox">
 								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
-									<!-- <p v-html="newContent"></p> -->
-									<img class="thumbnail" v-if="url1" :src="url1" />
-									<img class="thumbnail" v-if="url2" :src="url2" />
-									<img class="thumbnail" v-if="url3" :src="url3" />
+									<!-- {{}} -->
+									<img class="thumbnail" v-show="url1" v-bind:src="url1" />
+									<img class="thumbnail" v-show="url2" v-bind:src="url2" />
+									<img class="thumbnail" v-show="url3" v-bind:src="url3" />
 							</div>
 							<div class="fileSelect">
 								<label class="input-file-btn" for="input-file">사진 첨부하기</label>
 								<input multiple @change="onInputImage(event)" ref="postImage" type="file" id="input-file" style="display: none"/>
 								<p>이미지는 최대 3장까지</p>
 							</div>
+								<button class="previewBtn">게시글 등록 전 미리보기</button>
 							<div class="bntBox">
 								<div>
 									<button class="registerBtn" @click.prevent="checkForm()">작성</button>
@@ -71,20 +72,20 @@ export default {
 	},
 	methods: {
 		onInputImage(e) {
-			this.form.image1 = this.$refs.postImage.files[0];
+			let url1 = '';
+			this.form.image1 = this.$refs.postImage.files[0] ? this.$refs.postImage.files[0] : this.form.image1;
 			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
 			this.form.image3 = this.$refs.postImage.files[2] ? this.$refs.postImage.files[2] : '';
-			this.previewURL(e);
+			this.previewURL();
 		},
-		previewURL(e) {
+		previewURL() {
 			let url1 = '';
 			let url2 = '';
 			let url3 = '';
-			console.log(this.form.image1);
-			this.url1 = URL.createObjectURL(this.form.image1);
-			this.url2 = URL.createObjectURL(this.form.image2);
-			this.url3 = URL.createObjectURL(this.form.image3);
-			
+		// 	// console.log(this.form.image1);
+			this.url1 = this.form.image1 ? URL.createObjectURL(this.form.image1) : '';
+			this.url2 = this.form.image2 ? URL.createObjectURL(this.form.image2) : '';
+			this.url3 = this.form.image3 ? URL.createObjectURL(this.form.image3) : '';
 			// this.checkForm();
 		},
 		checkForm(e){
@@ -113,7 +114,7 @@ export default {
 			let variable1 = this.form.image2;
 			let variable2 = this.form.image3;
 			// console.log("hi");
-			// let newContent = this.form.content.replace(/(\n|\r\n)/g, "<br>");
+			let newContent = this.form.content.replace(/(\n|\r\n)/g, "<br>");
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 			let pk = userInfo.pk;
 			const index = this.$route.params.id;
@@ -123,7 +124,7 @@ export default {
 				tag: this.form.tag,
 				title: this.form.title,
 				user_key: pk,
-				content: this.form.content,
+				content: newContent,
 				price: this.form.price,
 				created_at: this.currentDate(),
 				image1: variable,
@@ -215,17 +216,20 @@ export default {
 }
 	.content {
 	.background{
-		height: 400px;
+		// height: 400px;
 		font-family: sans-serif;
 		margin-top: 50px;
 		@include center;
 		.createPostArea {
 			@include center;
-			.createInfo{
-				margin: 10px 0px;
-				font-size: 20px;
-				color: rgba(#76862c, 0.76);
+			@media screen and (min-width: 700px) {
+				padding: 0px 100px;
 			}
+			// .createInfo{
+			// 	margin: 10px 0px;
+			// 	font-size: 20px;
+			// 	color: rgba(#76862c, 0.76);
+			// }
 			.postBox {
 				width: 100%;
 				height: 100%;
@@ -296,6 +300,16 @@ export default {
 						text-align: center;
 						font-size: 12px;
 					}
+				}
+				.previewBtn{
+					background-color: white;
+					// width: 60%;
+					padding: 8px;
+					margin: 0px 10px 0px 0px;
+					color: rgba(#76862c, 0.76);
+					border-radius: .3em;
+					border: 1px solid #ddd;
+					font-size: 12px;
 				}
 				.bntBox {
 					width: 100%;
