@@ -453,6 +453,7 @@ export default {
 		}
 		.post__paragraph {
 			margin: .8em 3em 1em;
+			white-space: pre-line;
 			p {
 				text-align: justify;
 				padding: .3em 0;

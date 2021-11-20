@@ -24,6 +24,7 @@
 							</div>
 							<div class="textBox">
 								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
+								<!-- <p style="white-space: pre-line">{{form.content}}</p> -->
 									<!-- {{}} -->
 									<img class="thumbnail" v-show="url1" v-bind:src="url1" />
 									<img class="thumbnail" v-show="url2" v-bind:src="url2" />
@@ -113,8 +114,7 @@ export default {
 			let variable = this.form.image1;
 			let variable1 = this.form.image2;
 			let variable2 = this.form.image3;
-			// console.log("hi");
-			let newContent = this.form.content.replace(/(\n|\r\n)/g, "<br>");
+			// let newContent = this.form.content.replace(/(\n|\r\n)/g, "<br />");
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 			let pk = userInfo.pk;
 			const index = this.$route.params.id;
@@ -124,7 +124,7 @@ export default {
 				tag: this.form.tag,
 				title: this.form.title,
 				user_key: pk,
-				content: newContent,
+				content: this.form.content,
 				price: this.form.price,
 				created_at: this.currentDate(),
 				image1: variable,
