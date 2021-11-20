@@ -32,12 +32,9 @@
 								<!-- <div class="key">내용</div>
 								<div class="stick"></div> -->
 								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
-									<img class="thumbnail" v-if="this.post.image1" :src="this.post.image1" />
-									<img class="thumbnail" v-if="this.post.image2" :src="this.post.image2" />
-									<img class="thumbnail" v-if="this.post.image3" :src="this.post.image3" />
-									<img class="thumbnail" v-if="url1" :src="url1" />
-									<img class="thumbnail" v-if="url2" :src="url2" />
-									<img class="thumbnail" v-if="url3" :src="url3" />
+									<img class="thumbnail" :src="this.form.image1 ? url1 : this.post.image1" />
+									<img class="thumbnail" :src="this.form.image2 ? url2 : this.post.image2" />
+									<img class="thumbnail" :src="this.form.image3 ? url3 : this.post.image3" />
 							</div>
 							<div class="fileSelect">
 								<label class="input-file-btn" for="input-file">사진 첨부하기</label>
@@ -100,16 +97,19 @@ export default {
 			this.form.image1 = this.$refs.postImage.files[0] ? this.$refs.postImage.files[0] : undefined;
 			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
 			this.form.image3 = this.$refs.postImage.files[2] ? this.$refs.postImage.files[2] : '';
+			this.previewURL();
 		},
 		previewURL(e) {
 			let url1 = '';
 			let url2 = '';
 			let url3 = '';
-			console.log(this.form.image1);
-			this.url1 = URL.createObjectURL(this.form.image1);
-			this.url2 = URL.createObjectURL(this.form.image2);
-			this.url3 = URL.createObjectURL(this.form.image3);
+			this.url1 = this.form.image1 ? URL.createObjectURL(this.form.image1) : '';
+			this.url2 = this.form.image2 ? URL.createObjectURL(this.form.image2) : '';
+			this.url3 = this.form.image3 ? URL.createObjectURL(this.form.image3) : '';
 			
+			console.log(this.url1);
+			console.log(this.url2);
+			console.log(this.url3);
 			// this.checkForm();
 		},
 		async update() {

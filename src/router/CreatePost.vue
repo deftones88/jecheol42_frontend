@@ -26,16 +26,16 @@
 								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
 								<!-- <p style="white-space: pre-line">{{form.content}}</p> -->
 									<!-- {{}} -->
-									<img class="thumbnail" v-show="url1" v-bind:src="url1" />
-									<img class="thumbnail" v-show="url2" v-bind:src="url2" />
-									<img class="thumbnail" v-show="url3" v-bind:src="url3" />
+									<img class="thumbnail" v-show="url1" :src="url1" />
+									<img class="thumbnail" v-show="url2" :src="url2" />
+									<img class="thumbnail" v-show="url3" :src="url3" />
 							</div>
 							<div class="fileSelect">
 								<label class="input-file-btn" for="input-file">사진 첨부하기</label>
 								<input multiple @change="onInputImage(event)" ref="postImage" type="file" id="input-file" style="display: none"/>
 								<p>이미지는 최대 3장까지</p>
 							</div>
-								<button class="previewBtn">게시글 등록 전 미리보기</button>
+								<button class="previewBtn">등록 전 미리보기</button>
 							<div class="bntBox">
 								<div>
 									<button class="registerBtn" @click.prevent="checkForm()">작성</button>
