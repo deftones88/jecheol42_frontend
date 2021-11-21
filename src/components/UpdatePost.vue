@@ -22,8 +22,7 @@
 								<div class="price">
 									<!-- <div class="key">price</div>
 									<div class="stick"></div> -->
-									<label for="form-price">원</label>
-									<input id="form-price" v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="-" min="0"/>
+									<input v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="가격" min="0"/>
 									<div class="zero" v-else> {{form.price = 0}} </div>
 								</div>
 							</div>
@@ -33,8 +32,8 @@
 								<div class="stick"></div> -->
 								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
 								<img class="thumbnail" :src="form.image1 ? url1 : post.image1" />
-								<img class="thumbnail" :src="form.image2 ? url2 : post.image2" v-show="checkImg2"/>
-								<img class="thumbnail" :src="form.image3 ? url3 : post.image3" v-show="checkImg3"/>
+								<img class="thumbnail" :src="form.image2 ? url2 : post.image2" />
+								<img class="thumbnail" :src="form.image3 ? url3 : post.image3" />
 							</div>
 							<div class="fileSelect">
 								<label class="input-file-btn" for="input-file">사진 첨부하기</label>
@@ -57,7 +56,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import _ from 'lodash';
-
 export default {
 	name: 'UpdatePost',
 	data() {
@@ -74,9 +72,6 @@ export default {
 				image3: '',
 				view_count: ''
 			},
-			count: 0,
-			checkImg2: false,
-			checkImg3: false,
 			url1: '',
 			url2: '',
 			url3: ''
@@ -95,14 +90,7 @@ export default {
 		this.form.content = this.post.content;
 		this.form.region = this.post.region;
 		this.form.view_count = this.post.view_count;
-		if (!this.count) {
-			this.checkImg2 = this.post.image2 ? true : false;
-			this.checkImg3 = this.post.image3 ? true : false;
-			this.count++;
-		} else {
-			this.checkImg2 = this.form.image2 ? true : false;
-			this.checkImg3 = this.form.image3 ? true : false;
-		}
+		// console.log('beforeUpdate', this.form)
 	},
 	methods: {
 		...mapActions('post', [
@@ -132,7 +120,6 @@ export default {
 				image3: this.form.image3
 			};
 			let formData = new FormData();
-
 			for (let key in postObj) {
 				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
 			}
@@ -141,7 +128,7 @@ export default {
 			this.$router.push(`/post/${this.form.id}`);
 		},
 		cancel() {
-			this.$router.push(`/post/${this.form.id}`);
+			this.$router.push('/board')
 		}
 	}
 }
@@ -177,7 +164,6 @@ export default {
 	border-color: transparent;
 }
 @mixin btnCss {
-	font-family: 'Gowun Dodum', sans-serif;
 	font-size: 17px;
 	width: 10%;
 	min-width: 80px;
@@ -190,10 +176,12 @@ export default {
 }
 .content {
 	.background{
+		height: 400px;
+		font-family: sans-serif;
+		margin-top: 50px;
 		@include center;
 		.createPostArea {
 			@include center;
-			margin: 1em 0 2em;
 			.createInfo{
 				margin: 10px 0px;
 				font-size: 20px;
@@ -224,20 +212,9 @@ export default {
 					}
 					.price{
 						@include input(100%);
-						position: relative;
-						label {
-							position: absolute;
-							right: 1.5em;
-							top: 28%;
-							color: gray;
-							font-size: .8em;
-						}
 						input{
 							@include price;
 							text-align: center;
-							&:focus::placeholder {
-  							color: transparent;
-							}
 						}
 						.zero{
 							@include price;
@@ -249,8 +226,6 @@ export default {
 					@include boxCss;
 					.text{
 						@include input(95%);
-						resize: none;
-						height: 200px;
 						// min-height: 300px;
 					}
 					.thumbnail{
@@ -264,7 +239,6 @@ export default {
 					margin: 10px 0px;
 					display: flex;
 					.input-file-btn{
-						font-family: 'Gowun Dodum', sans-serif;
 						width: 50%;
 						padding: 8px;
 						margin: 0px 10px 0px 0px;
